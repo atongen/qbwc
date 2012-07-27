@@ -1,10 +1,9 @@
 # -*- encoding: utf-8 -*-
 $:.push File.expand_path("../lib", __FILE__)
-require "qbwc/version"
 
 Gem::Specification.new do |s|
   s.name        = "qbwc"
-  s.version     = QBWC::VERSION
+  s.version     = "0.3"
   s.authors     = ["Alex Skryl", "Russell Osborne"]
   s.email       = ["rut216@gmail.com", "russell@burningpony.com"]
   s.homepage    = ""

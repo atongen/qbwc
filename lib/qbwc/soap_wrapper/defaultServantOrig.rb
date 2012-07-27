@@ -1,3 +1,4 @@
+ 
 class QBWC::QBWebConnectorSvcSoap
   # SYNOPSIS
   #   serverVersion(parameters)
@@ -10,7 +11,7 @@ class QBWC::QBWebConnectorSvcSoap
   #
   def serverVersion(parameters)
     #p parameters
-    QBWC::ServerVersionResponse.new(nil)
+    ServerVersionResponse.new(nil)
   end
 
   # SYNOPSIS
@@ -24,7 +25,7 @@ class QBWC::QBWebConnectorSvcSoap
   #
   def clientVersion(parameters)
     #p parameters
-    QBWC::ClientVersionResponse.new(nil)
+    ClientVersionResponse.new(nil)
   end
 
   # SYNOPSIS
@@ -37,8 +38,8 @@ class QBWC::QBWebConnectorSvcSoap
   #   parameters      AuthenticateResponse - {http://developer.intuit.com/}authenticateResponse
   #
   def authenticate(parameters)
-    #p parameters
-    QBWC::AuthenticateResponse.new(nil, nil)
+    #p parameters                               
+    AuthenticateResponse.new(['foo', QBWC.quickbooks_company_file_path]) #path to company file
   end
 
   # SYNOPSIS
@@ -51,10 +52,10 @@ class QBWC::QBWebConnectorSvcSoap
   #   parameters      SendRequestXMLResponse - {http://developer.intuit.com/}sendRequestXMLResponse
   #
   def sendRequestXML(parameters)
-    #p parameters
-    QBWC::SendRequestXMLResponse.new(nil)
+    qbwc_session = QBWC::Session.new_or_unfinished
+    SendRequestXMLResponse.new(wrap_in_version(qbwc_session.next))
   end
-
+  
   # SYNOPSIS
   #   receiveResponseXML(parameters)
   #
@@ -65,8 +66,9 @@ class QBWC::QBWebConnectorSvcSoap
   #   parameters      ReceiveResponseXMLResponse - {http://developer.intuit.com/}receiveResponseXMLResponse
   #
   def receiveResponseXML(response)
-    #p parameters
-    QBWC::ReceiveResponseXMLResponse.new(nil)
+    qbwc_session = QBWC::Session.new_or_unfinished
+    qbwc_session.response = response.response
+    ReceiveResponseXMLResponse.new(qbwc_session.progress)
   end
 
   # SYNOPSIS
@@ -79,8 +81,8 @@ class QBWC::QBWebConnectorSvcSoap
   #   parameters      ConnectionErrorResponse - {http://developer.intuit.com/}connectionErrorResponse
   #
   def connectionError(parameters)
-    #p parameters
-    QBWC::ConnectionErrorResponse.new(nil)
+    #p [parameters]
+    raise NotImplementedError.new
   end
 
   # SYNOPSIS
@@ -93,8 +95,8 @@ class QBWC::QBWebConnectorSvcSoap
   #   parameters      GetLastErrorResponse - {http://developer.intuit.com/}getLastErrorResponse
   #
   def getLastError(parameters)
-    #p parameters
-    QBWC::GetLastErrorResponse.new(nil)
+    #p [parameters]
+    GetLastErrorResponse.new(nil)
   end
 
   # SYNOPSIS
@@ -107,7 +109,23 @@ class QBWC::QBWebConnectorSvcSoap
   #   parameters      CloseConnectionResponse - {http://developer.intuit.com/}closeConnectionResponse
   #
   def closeConnection(parameters)
-    #p parameters
-    QBWC::CloseConnectionResponse.new(nil)
+    #p [parameters]
+    qbwc_session = QBWC::Session.session
+    if qbwc_session && qbwc_session.finished?
+      qbwc_session.process_responses 
+    end
+    CloseConnectionResponse.new('OK')
   end
+
+private
+
+  # wraps xml in version header
+  def wrap_in_version(xml_rq)
+    if QBWC.quickbooks_type == :qbpos
+      %Q( <?qbposxml version="#{QBWC.quickbooks_min_version}"?> ) + xml_rq
+    else
+      %Q( <?qbxml version="#{QBWC.quickbooks_min_version}"?> ) + xml_rq
+    end
+  end
+
 end
