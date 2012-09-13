@@ -1,5 +1,4 @@
 $:.unshift File.dirname(File.expand_path(__FILE__))
-require 'quickbooks'
 
 require 'qbwc/soap_wrapper/default'
 require 'qbwc/soap_wrapper/defaultMappingRegistry'
@@ -13,10 +12,6 @@ module QBWC
   class << self
     def configure
       yield Config
-    end
-
-    def parser
-      @parser ||= Quickbooks::API[Config.api]
     end
   end
 end

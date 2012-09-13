@@ -25,10 +25,6 @@ module QBWC
       # Quickbooks owner id provided in qwc file
       attr_accessor :owner_id
       @owner_id = '{57F3B9B1-86F1-4fcc-B1EE-566DE1813D20}'
-
-      # Quickbooks Type (either :qb or :qbpos)
-      attr_accessor :api
-      @api = :qb
     end
 
   end

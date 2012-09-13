@@ -3,7 +3,7 @@ $:.push File.expand_path("../lib", __FILE__)
 
 Gem::Specification.new do |s|
   s.name        = "qbwc"
-  s.version     = "0.3"
+  s.version     = "0.4"
   s.authors     = ["Alex Skryl", "Russell Osborne"]
   s.email       = ["rut216@gmail.com", "russell@burningpony.com"]
   s.homepage    = ""
@@ -19,7 +19,6 @@ Gem::Specification.new do |s|
 
   # specify any dependencies here; for example:
   # s.add_development_dependency "rspec"
-   s.add_dependency "quickbooks_api", [">= 0.1.6"]
-   s.add_dependency "rubyjedi-soap4r", [">= 1.5.8.20100619003610"]
+  s.add_dependency "rubyjedi-soap4r", [">= 1.5.8.20100619003610"]
 
 end
