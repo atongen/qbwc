@@ -8,8 +8,8 @@ This is a fork of https://github.com/skryl/qbwc
 
 It was changed for 2 main reasons:
 
-* remove dependency on quickbooks\_api, which was extreemly resource intensive
-* allow to use custom soap api service class through configuration, although a default one is provided
+* remove dependency on quickbooks\_api
+* allow to use custom soap api service class through configuration, although a default one is still provided
 
 ## Installation
 
