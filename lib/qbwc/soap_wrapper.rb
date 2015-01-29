@@ -33,7 +33,7 @@ module QBWC
 
       # debugging
       result = res_data.send_string
-      puts result
+      #puts result
 
       result
     end
